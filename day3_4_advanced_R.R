@@ -44,3 +44,32 @@ departments <- tibble(
                       )
 print(employees)
 print(departments)
+#NOTE - employees tab has more rows than departments, so an inner join will erase rows from master table, use left join 
+
+employee_dept_left <- employees %>%
+  left_join(departments,by = c("emp_id" = "dept_id"))
+#NOTE - if both tables have the same primary key column name, can bypass the *by* argument as dplyr will carry out the join automatically
+print("left Join results:")
+print(employee_dept_left)
+
+######DAY 4###############################
+#using ggplot2! - for data visualisations
+
+starwars_clean<-starwars%>%
+  filter(
+        !is.na(mass),!is.na(height), mass <1000 #Filtering out outliers
+        )
+#print(starwars_clean)
+
+ggplot(starwars_clean, aes(x=height, y=mass, color=gender)) + 
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+        title = "Height vs Mass of Star Wars Characters",
+        subtitle = "Analysed by gender using ggplot2",
+        x = "Height(cm)",
+        y = "Mass(kg)",
+        color = "Gender"
+      ) +
+  theme_classic()
+  
